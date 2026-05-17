@@ -1,145 +1,345 @@
 # AI Finance Companion Agent
 
-A minimal AI finance agent that maintains memory across sessions,
-uses provided finance tools, and demonstrates context-aware reasoning.
+A minimal AI finance companion agent built for the Reach AI Engineer assignment.
+
+The agent maintains persistent memory across sessions, intelligently uses financial tools, and combines long-term user context with fresh live data to make contextual financial decisions.
 
 ---
 
-## Project Structure
+# Objective
 
-```
+The goal of this project was to build a lightweight AI agent that can:
+
+* maintain memory across conversations
+* decide when tools are needed
+* avoid stale memory for changing financial data
+* reason contextually about financial trade-offs
+* remain simple and framework-light
+
+The implementation intentionally avoids:
+
+* LangChain
+* CrewAI
+* vector databases
+* embeddings
+* complex orchestration frameworks
+
+The focus is on:
+
+* memory engineering
+* tool discipline
+* context management
+* deterministic computation
+* conversational reasoning
+
+---
+
+# Tech Stack
+
+* Python 3.10+
+* Groq API
+* llama-3.3-70b-versatile
+* JSON persistence
+* Deterministic Python arithmetic
+
+---
+
+# Project Structure
+
+```text
 finance_agent/
-├── tools.py            # provided — do not modify
-├── sessions.md         # provided — do not modify
 │
-├── agent.py            # core agent loop
-├── memory_manager.py   # load/save/update memory.json
-├── prompts.py          # all LLM prompts
-├── tool_executor.py    # tool dispatch + all Python arithmetic
-├── session_runner.py   # replays sessions from sessions.md
-│
-├── memory.json         # created automatically at runtime
+├── agent.py
+├── prompts.py
+├── memory_manager.py
+├── tool_executor.py
+├── session_runner.py
+├── tools.py
+├── sessions.md
 ├── requirements.txt
 ├── writeup_template.md
+├── memory.json
+│
+├── outputs/
+│   ├── session1_output.txt
+│   └── session2_output.txt
 │
 ├── logs/
-│   └── transcript.txt  # full log: tool calls, memory reads/writes, LLM output
+│   └── transcript.txt
 │
-└── outputs/
-    ├── session1_output.txt   # clean turn-by-turn output
-    └── session2_output.txt
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## Setup
+# Core Architecture
+
+```text
+User Input
+    ↓
+Memory Read
+    ↓
+LLM Tool Decision
+    ↓
+Deterministic Tool Execution
+    ↓
+Python Arithmetic Summaries
+    ↓
+LLM Response Generation
+    ↓
+Memory Extraction
+    ↓
+Memory Persistence
+```
+
+---
+
+# Design Decisions
+
+## 1. Memory vs Live Financial State
+
+One of the most important architectural decisions was separating:
+
+### Persistent Memory
+
+Stored:
+
+* long-term goals
+* behavioral intentions
+* user commitments
+* financial preferences
+
+Examples:
+
+* save ₹15 lakh for house down payment
+* reduce food delivery spending
+* allocate ₹30,000 to house fund
+
+### NOT Stored
+
+Not persisted:
+
+* account balances
+* transaction totals
+* upcoming bills
+* temporary cash-flow data
+
+These values become stale quickly and are always fetched live using tools.
+
+---
+
+## 2. Deterministic Arithmetic
+
+The LLM is never responsible for:
+
+* arithmetic
+* totals
+* filtering
+* computations
+* date calculations
+
+All calculations are handled in Python inside:
+
+```python
+tool_executor.compute_summaries()
+```
+
+This avoids arithmetic hallucination and improves reliability.
+
+---
+
+## 3. Minimal Tool Usage
+
+The agent is prompted to call only the minimum necessary tools.
+
+Examples:
+
+* spending question → transactions only
+* affordability question → balances + upcoming bills
+* reminder request → reminder tool only
+
+This keeps the agent disciplined and efficient.
+
+---
+
+# Session Design
+
+## Session 1
+
+The agent:
+
+* analyzes salary and savings
+* evaluates food delivery spending
+* discusses savings goals
+* stores long-term financial intentions
+* sets a reminder
+
+## Session 2
+
+The agent:
+
+* recalls the earlier house-fund goal
+* remembers spending-reduction goals
+* fetches fresh balances and bills
+* reasons about the ₹80,000 MacBook purchase
+* gives contextual advice instead of simplistic yes/no answers
+
+This demonstrates:
+
+* persistent memory
+* contextual reasoning
+* live-state revalidation
+* tool discipline
+
+---
+
+# Running The Project
+
+## 1. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
-
-# Option A — .env file (recommended)
-cp .env.example .env
-# edit .env and paste your GROQ_API_KEY
-
-# Option B — export directly
-export GROQ_API_KEY="gsk_..."
 ```
 
 ---
 
-## Running
+## 2. Create `.env`
 
-### Session 1 (Monday, Nov 3, 2025)
+```env
+GROQ_API_KEY=your_groq_api_key
+```
 
-Make sure `CURRENT_SESSION = 1` in `tools.py` (default), then:
+---
+
+## 3. Run Session 1
+
+Set in `tools.py`:
+
+```python
+CURRENT_SESSION = 1
+```
+
+Then run:
 
 ```bash
 python session_runner.py 1
 ```
 
-This will:
-- Run all 4 turns from Session 1
-- Write memory to `memory.json`
-- Write clean output to `outputs/session1_output.txt`
-- Append full log to `logs/transcript.txt`
+---
 
-### Session 2 (Thursday, Nov 6, 2025)
+## 4. Run Session 2
 
-Change `CURRENT_SESSION = 2` in `tools.py`, then:
+Set in `tools.py`:
+
+```python
+CURRENT_SESSION = 2
+```
+
+Then run:
 
 ```bash
 python session_runner.py 2
 ```
 
-The agent will load the memory saved from Session 1 and use it to reason about
-the MacBook purchase question.
+---
+
+# Output Files
+
+## Clean Outputs
+
+Located in:
+
+```text
+outputs/
+```
+
+Contains:
+
+* clean assistant responses
+* final conversational outputs
 
 ---
 
-## Architecture
+## Full Internal Logs
 
-```
-user message
-  → load memory.json
-  → LLM decides which tools to call     (judgment)
-  → execute tools in Python             (deterministic)
-  → compute summaries in Python         (deterministic — no LLM math)
-  → LLM generates response              (reasoning + language)
-  → LLM identifies new memory facts     (judgment)
-  → save updated memory.json
-  → log everything
+Located in:
+
+```text
+logs/transcript.txt
 ```
 
-**Two LLM calls per turn** (via Groq — `llama-3.3-70b-versatile`, fallback `llama3-8b-8192`)**:**
-1. Tool decision  (TOOL_DECISION_PROMPT → JSON list of tools)
-2. Response + memory update  (RESPONSE_PROMPT → JSON with response + memory_updates)
+Contains:
 
-**Zero LLM math:**
-All arithmetic (summing categories, computing targets, totaling bills) lives in
-`tool_executor.compute_summaries()`. The LLM only cites pre-computed numbers.
+* memory reads
+* memory writes
+* tool decisions
+* tool calls
+* computed summaries
+* raw LLM responses
 
 ---
 
-## What is stored in memory
+# Example Memory State
 
-**Stored** (long-term facts only):
-- User goals and commitments
-- Behavioural patterns the user wants to change
-- Actions the agent took (reminders set)
-
-**Not stored** (always fetched live):
-- Account balances
-- Transaction totals
-- Upcoming bill amounts
+```json
+{
+  "facts": [
+    "Committed to saving ₹15 lakh in 2 years for a house down payment",
+    "Aim to allocate ₹30,000 to the house fund this month",
+    "wants to reduce food delivery expenses"
+  ]
+}
+```
 
 ---
 
-## Log format
+# LLM Usage Philosophy
 
-```
-[USER]
-message text
+The LLM is used ONLY for:
 
-[MEMORY READ]
-  - fact 1
-  - fact 2
+* conversational reasoning
+* contextual judgment
+* tool selection
+* response generation
+* memory extraction
 
-[LLM TOOL DECISION]
-{"tools": [{"name": "get_account_balance", "args": {}}]}
+Python code handles:
 
-[TOOL CALL] get_account_balance({})
-[TOOL RESULT]
-{ "checking": 128000, ... }
+* arithmetic
+* financial calculations
+* deterministic logic
+* persistence
+* date handling
 
-[COMPUTED SUMMARIES (Python arithmetic)]
-{ "checking_inr": 128000, ... }
+---
 
-[LLM RESPONSE]
-{"response": "...", "memory_updates": [...]}
+# Assignment Alignment
 
-[MEMORY WRITE]
-  + new fact stored
+This implementation directly addresses the assignment goals:
 
-[ASSISTANT]
-response text
-```
+* memory engineering
+* tool orchestration
+* context management
+* reasoning across sessions
+* persistent state
+* lightweight agent architecture
+
+---
+
+# Future Improvements
+
+With additional time, possible improvements include:
+
+* typed memory categories
+* contradiction resolution in memory
+* memory relevance ranking
+* better reminder date parsing
+* affordability scoring system
+* lightweight memory retrieval heuristics
+
+---
+
+# Author
+
+Satyam Kumar
