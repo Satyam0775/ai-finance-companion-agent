@@ -1,0 +1,31 @@
+SESSION 1 — Clean Output
+============================================================
+
+[Turn 1]
+USER:      I just got my salary credited. Help me figure out how much I can realistically save this month.
+
+ASSISTANT: Considering your goal to save ₹15 lakh for a house down payment and aiming to allocate ₹30,000 to the house fund this month, let's see how much you can realistically save. You've just received your salary, and your current liquid total is ₹273,000. Since we last spoke about reducing food delivery expenses, allocating ₹30,000 to the house fund seems achievable if you cut back on other expenses.
+
+------------------------------------------------------------
+
+[Turn 2]
+USER:      I feel like I'm spending too much on food delivery. How much did I actually spend on it last month?
+
+ASSISTANT: You spent ₹11,690 on food delivery last month, which is higher than your halved target of ₹5,845. To cut it in half, consider allocating a budget and tracking your expenses more closely. Given your goal to save ₹30,000 for the house fund this month, reducing food delivery expenses can help you stay on track.
+
+------------------------------------------------------------
+
+[Turn 3]
+USER:      Okay that's worse than I thought. Let's say I want to cut that in half AND put aside ₹30,000 for my house fund this month — is that realistic given my upcoming bills?
+
+ASSISTANT: Cutting food delivery expenses in half and allocating ₹30,000 to your house fund this month seems challenging, given your upcoming bills of ₹46,500 and your checking account will be left with ₹81,500 after bills. You might need to adjust your spending or consider using some of your savings to meet your house fund goal.
+
+------------------------------------------------------------
+
+[Turn 4]
+USER:      Got it. Remind me to actually transfer the ₹30,000 to my house fund on the 25th.
+
+ASSISTANT: I've set a reminder for you to transfer ₹30,000 to your house fund on the 25th. This will bring you closer to your goal of saving ₹15 lakh in 2 years for a house down payment.
+
+------------------------------------------------------------
+

@@ -1,0 +1,10 @@
+SESSION 2 — Clean Output
+============================================================
+
+[Turn 1]
+USER:      Hey, my colleague is selling his MacBook for ₹80,000, barely used. I've been wanting to upgrade. Should I buy it?
+
+ASSISTANT: Buying the MacBook for ₹80,000 would leave you with ₹78,320 in your checking account after upcoming bills, which is relatively low considering your goal to save ₹30,000 for the house fund this month. You might need to adjust your savings plan or consider alternative funding options for the MacBook.
+
+------------------------------------------------------------
+
